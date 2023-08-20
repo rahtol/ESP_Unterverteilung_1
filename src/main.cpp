@@ -4,11 +4,19 @@
 #include "NtpSettings.h"
 #include "MqttSettings.h"
 #include "MqttS0Counters.h"
+#include "version.h"
+
+namespace ESP_Unterverteilung {
+
+const char* version = "Project ESP_Unterverteilung, Version 1.0, 20.08.2023";
+
+}
+
 
 void setup()
 {
     Serial.begin(115200);
-    MessageOutput.println("Starting Esp-Unterverteilung");
+    MessageOutput.println(ESP_Unterverteilung::version);
 
     // Initialize WiFi
     MessageOutput.println("Initialize Network... ");
@@ -38,6 +46,10 @@ void loop()
   MessageOutput.loop();
   yield();
   NetworkSettings.loop();
+  yield();
+  NtpSettings.loop();
+  yield();
+  MqttSettings.loop();
   yield();
   MqttS0Counters.loop();
   yield();
