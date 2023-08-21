@@ -131,8 +131,8 @@ void MqttS0CounterClass::loop()
     {
         t_last_mqtt_publish = t_current;
         count_total += count;
-        MqttSettings.publish(_name + "/count", String(count));
-        MqttSettings.publish(_name + "/count_total", String(count_total));
+        MqttSettings.publish(_name + "/count", String(count, 4));
+        MqttSettings.publish(_name + "/count_total", String(count_total, 4));
         MqttSettings.publish(_name + "/state", String(state));
         MessageOutput.printf("Publish: name=%s state=%d, count=%.4f, count_total=%.4f\r\n", _name.c_str(), state, count, count_total);
         count = 0.0;
@@ -216,9 +216,16 @@ void MqttS0CountersClass::onMqttMessage(String subtopic, String payload)
 void MqttS0CounterClass::onMqttMessage(String subtopic, String payload)
 {
     count_initial = payload.toDouble();
-    count_total = count_initial;
-    MessageOutput.printf("Subscription callback for S0-instance==%s, inital_counter=%.4f\r\n", _name.c_str(), count_initial);
-    MqttSettings.publish(_name + "/time_counter_initialized", NtpSettings.getLocalTimeAndDate());
+    if (count_initial > count_total)
+    {
+        count_total = count_initial;
+        MessageOutput.printf("Subscription callback for S0-instance==%s, inital_counter=%.4f\r\n", _name.c_str(), count_initial);
+        MqttSettings.publish(_name + "/time_counter_initialized", NtpSettings.getLocalTimeAndDate());
+    }
+    else
+    {
+        MessageOutput.printf("Ignored subscription callback for S0-instance==%s, inital_counter=%.4f, count_total=%.4f\r\n", _name.c_str(), count_initial, count_total);
+    }
 }
 
 
