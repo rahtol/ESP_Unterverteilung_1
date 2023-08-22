@@ -11,7 +11,7 @@ MqttS0CounterClass::MqttS0CounterClass(String name, uint8_t pin, uint32_t pulses
 
     state = 0;
     count = 0.0;
-    count_initial = 1000.0;
+    count_initial = 0.0;
     count_total = count_initial;
     t_state0_left = 0;
     this->init();
