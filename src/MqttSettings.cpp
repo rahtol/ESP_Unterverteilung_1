@@ -24,19 +24,19 @@ void MqttSettingsClass::onMqttConnect(bool sessionPresent)
 {
     _mqttState = mqtt_ready;
     String t0 = NtpSettings.getLocalTimeAndDate();
-    MessageOutput.printf("Connected to MQTT at %s.\r\n", t0.c_str());
+    MessageOutput.printf("Connected to MQTT at %s. _mqttState = mqtt_ready\r\n", t0.c_str());
     publish(willTopic, "online since " + t0);
     publish("version", ESP_Unterverteilung::version);
 }
 
 void MqttSettingsClass::onMqttDisconnect(espMqttClientTypes::DisconnectReason reason)
 {
-    _mqttState = mqtt_wait_for_reconnect;
     t_wait_until_reconnect = millis();
-    delete mqttClient;
-    mqttClient = nullptr;
+//    delete mqttClient;
+//    mqttClient = nullptr;
+    _mqttState = mqtt_wait_for_reconnect;
 
-    MessageOutput.println("Disconnected from MQTT.");
+    MessageOutput.println("Disconnected from MQTT. _mqttState = mqtt_wait_for_reconnect");
 
     MessageOutput.print("Disconnect reason: ");
     switch (reason) {
@@ -138,20 +138,22 @@ void MqttSettingsClass::loop()
 {
     unsigned long t_current = millis();
 
-    if((_mqttState == mqtt_idle) && (t_last_check_for_prerequisites - t_current > 1000))
+    if((_mqttState == mqtt_idle) && (t_current - t_last_check_for_prerequisites > 1000))
     {
         t_last_check_for_prerequisites = t_current;
         if (NetworkSettings.isConnected() && NtpSettings.is_ready())
         {
             _mqttState = mqtt_initializing;
+            MessageOutput.println("_mqttState = mqtt_initializing");
             performConnect();
         }
     }
 
-    if (_mqttState == mqtt_wait_for_reconnect && t_wait_until_reconnect - t_current > 5000)
+    if (_mqttState == mqtt_wait_for_reconnect && (t_current - t_wait_until_reconnect) > 5000)
     {
         _mqttState = mqtt_idle;
-        createMqttClientObject();
+        MessageOutput.println("_mqttState = mqtt_idle (after mqtt_wait_for_reconnect)");
+//        createMqttClientObject();
     }
 }
 
