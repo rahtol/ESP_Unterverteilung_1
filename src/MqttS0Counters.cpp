@@ -127,7 +127,7 @@ void MqttS0CounterClass::loop()
     };
 
     // check for publish event
-    if (t_current - t_last_mqtt_publish > 60000)
+    if ((t_current - t_last_mqtt_publish > 60000) && MqttSettings.isConnected())
     {
         t_last_mqtt_publish = t_current;
         count_total += count;

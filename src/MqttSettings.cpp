@@ -32,8 +32,6 @@ void MqttSettingsClass::onMqttConnect(bool sessionPresent)
 void MqttSettingsClass::onMqttDisconnect(espMqttClientTypes::DisconnectReason reason)
 {
     t_wait_until_reconnect = millis();
-//    delete mqttClient;
-//    mqttClient = nullptr;
     _mqttState = mqtt_wait_for_reconnect;
 
     MessageOutput.println("Disconnected from MQTT. _mqttState = mqtt_wait_for_reconnect");
@@ -153,7 +151,6 @@ void MqttSettingsClass::loop()
     {
         _mqttState = mqtt_idle;
         MessageOutput.println("_mqttState = mqtt_idle (after mqtt_wait_for_reconnect)");
-//        createMqttClientObject();
     }
 }
 
