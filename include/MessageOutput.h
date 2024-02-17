@@ -12,6 +12,8 @@ public:
     void loop();
     size_t write(uint8_t c) override;
     size_t write(const uint8_t *buffer, size_t size) override;
+    String get_millis_as_String (const char *fmt = NULL);
+    void logf(const char *fmt...);
 
 private:
     char* _ws = NULL;

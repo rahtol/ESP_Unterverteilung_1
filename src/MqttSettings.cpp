@@ -24,8 +24,8 @@ void MqttSettingsClass::onMqttConnect(bool sessionPresent)
 {
     _mqttState = mqtt_ready;
     String t0 = NtpSettings.getLocalTimeAndDate();
-    MessageOutput.printf("Connected to MQTT at %s. _mqttState = mqtt_ready\r\n", t0.c_str());
-    publish(willTopic, "online since " + t0);
+    MessageOutput.logf("Connected to MQTT at %s. _mqttState = mqtt_ready", t0.c_str());
+    publish(willTopic, MessageOutput.get_millis_as_String() + ": online since " + t0);
     publish("version", ESP_Unterverteilung::version);
 }
 

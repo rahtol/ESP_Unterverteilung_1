@@ -16,6 +16,7 @@ void NtpSettingsClass::init()
 
     setServer();
     setTimezone();
+    t_boot = millis();
 };
 
 void NtpSettingsClass::loop ()
@@ -77,7 +78,10 @@ void NtpSettingsClass::NetworkEvent(network_event event)
     }
 }
 
-
+unsigned long NtpSettingsClass::get_boottime_millis()
+{
+    return t_boot;
+};
 
 
 NtpSettingsClass NtpSettings;
