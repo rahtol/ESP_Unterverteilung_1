@@ -23,6 +23,7 @@ private:
     double kwH_per_pulse;
 
     unsigned long t_last_mqtt_publish;
+    boolean initial_count_subscription_callback_has_occured;
 
     void countEvent();
     void errEvent();

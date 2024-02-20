@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "NtpSettings.h"
 #include <time.h>
+#include "MessageOutput.h"
 
 NtpSettingsClass::NtpSettingsClass()
 {
@@ -54,10 +55,10 @@ String NtpSettingsClass::getLocalTimeAndDate()
 {
   struct tm timeinfo;
   if(!::getLocalTime(&timeinfo)){
-    Serial.println("Failed to obtain time");
+    MessageOutput.logf("Failed to obtain time");
     return String("???");
   }
-  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+//  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
   
   char str[32];
   strftime(str, sizeof str, "%d.%m.%Y:%H.%M.%S", &timeinfo);

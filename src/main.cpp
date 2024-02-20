@@ -15,7 +15,8 @@ namespace ESP_Unterverteilung {
 //const char* version = "Project ESP_Unterverteilung, Version 1.4, 14.02.2024";
 //const char* version = "Project ESP_Unterverteilung, Version 1.5, 15.02.2024";
 //const char* version = "Project ESP_Unterverteilung, Version 1.6, 16.02.2024";
-const char* version = "Project ESP_Unterverteilung, Version 1.7, 17.02.2024";
+//const char* version = "Project ESP_Unterverteilung, Version 1.7, 17.02.2024";
+const char* version = "Project ESP_Unterverteilung, Version 1.12, 17.02.2024 17:51:00";
 
 }
 
@@ -23,29 +24,29 @@ const char* version = "Project ESP_Unterverteilung, Version 1.7, 17.02.2024";
 void setup()
 {
     Serial.begin(115200);
-    MessageOutput.println(ESP_Unterverteilung::version);
+    MessageOutput.logf(ESP_Unterverteilung::version);
 
     // Initialize WiFi
-    MessageOutput.println("Initialize Network... ");
+    MessageOutput.logf("Initialize Network... ");
     NetworkSettings.init();
-    MessageOutput.println("... done Initialize Network");
+    MessageOutput.logf("... done Initialize Network");
 
     // Initialize NTP
-    MessageOutput.println("Initialize NTP... ");
+    MessageOutput.logf("Initialize NTP... ");
     NtpSettings.init();
-    MessageOutput.println("done");
+    MessageOutput.logf("done");
 
     // Initialize MqTT
-    MessageOutput.println("Initialize MqTT... ");
+    MessageOutput.logf("Initialize MqTT... ");
     MqttSettings.init();
-    MessageOutput.println("... done initialize MqTT");
+    MessageOutput.logf("... done initialize MqTT");
 
     // Initialize MqttS0Counters
-    MessageOutput.println("Initialize MqttS0Counters... ");
+    MessageOutput.logf("Initialize MqttS0Counters... ");
     MqttS0Counters.init();
     MqttS0Counters.addS0Counter("küche", 5, 1000);  // Küche, grün
     MqttS0Counters.addS0Counter("herd", 4, 400);  // Herd, gelb
-    MessageOutput.println("... done initialize MqttS0Counters... ");
+    MessageOutput.logf("... done initialize MqttS0Counters... ");
 }
 
 void loop()

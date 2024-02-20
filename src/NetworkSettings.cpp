@@ -1,7 +1,3 @@
-// SPDX-License-Identifier: GPL-2.0-or-later
-/*
- * Copyright (C) 2022 Thomas Basler and others
- */
 #include "NetworkSettings.h"
 #include "MessageOutput.h"
 #include <ETH.h>
@@ -18,9 +14,9 @@ void NetworkSettingsClass::init()
     WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
 
     WiFi.onEvent(std::bind(&NetworkSettingsClass::NetworkEvent, this, _1));
-    MessageOutput.println("calling WiFi.mode");
+    MessageOutput.logf("calling WiFi.mode");
     WiFi.mode(WIFI_STA);
-    MessageOutput.println("calling WiFi.begin");
+    MessageOutput.logf("calling WiFi.begin");
     WiFi.begin();
 }
 
@@ -28,27 +24,27 @@ void NetworkSettingsClass::NetworkEvent(WiFiEvent_t event)
 {
     switch (event) {
     case ARDUINO_EVENT_WIFI_READY:
-        MessageOutput.println("WiFi event ARDUINO_EVENT_WIFI_READY");
+        MessageOutput.logf("WiFi event ARDUINO_EVENT_WIFI_READY");
         break;
     case ARDUINO_EVENT_WIFI_STA_START:
-        MessageOutput.println("WiFi event ARDUINO_EVENT_WIFI_STA_START");
+        MessageOutput.logf("WiFi event ARDUINO_EVENT_WIFI_STA_START");
         break;
     case ARDUINO_EVENT_WIFI_STA_CONNECTED:
-        MessageOutput.println("WiFi connected");
+        MessageOutput.logf("WiFi connected");
         raiseEvent(network_event::NETWORK_CONNECTED);
         break;
     case ARDUINO_EVENT_WIFI_STA_DISCONNECTED:
-        MessageOutput.println("WiFi disconnected");
-        MessageOutput.println("Try reconnecting");
+        MessageOutput.logf("WiFi disconnected");
+        MessageOutput.logf("Try reconnecting");
         WiFi.reconnect();
         raiseEvent(network_event::NETWORK_DISCONNECTED);
         break;
     case ARDUINO_EVENT_WIFI_STA_GOT_IP:
-        MessageOutput.printf("WiFi got ip: %s\r\n", WiFi.localIP().toString().c_str());
+        MessageOutput.logf("WiFi got ip: %s", WiFi.localIP().toString().c_str());
         raiseEvent(network_event::NETWORK_GOT_IP);
         break;
     default:
-        MessageOutput.printf("Unknown WiFi Event: %d\r\n", event);
+        MessageOutput.logf("Unknown WiFi Event: %d", event);
         break;
     }
 }
