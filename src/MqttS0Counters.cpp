@@ -134,6 +134,7 @@ void MqttS0CounterClass::loop()
         t_last_mqtt_publish = t_current;
         count_total += count;
         MqttSettings.publish(_name + "/count", String(count, 4));
+        MqttSettings.publish(_name + "/power", String(count * 60 * 1000, 1));
         MqttSettings.publish(_name + "/count_total", String(count_total, 4));
         MqttSettings.publish(_name + "/state", String(state));
         MessageOutput.logf("Publish: name=%s state=%d, count=%.4f, count_total=%.4f", _name.c_str(), state, count, count_total);

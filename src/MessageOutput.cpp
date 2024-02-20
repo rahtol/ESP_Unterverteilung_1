@@ -33,7 +33,7 @@ void MessageOutputClass::logf(const char *fmt...)
 
     char s_timestamp[32];
     unsigned long t_current = millis();
-    sprintf(s_timestamp, "%10d: ", t_current);
+    sprintf(s_timestamp, "%12d: ", t_current);
     Serial.write((uint8_t *)s_timestamp, strlen(s_timestamp));
 
     static char bf [256];
