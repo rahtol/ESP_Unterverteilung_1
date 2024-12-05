@@ -8,6 +8,11 @@
 
 MessageOutputClass MessageOutput;
 
+void MessageOutputClass::setWebsocket(AsyncWebSocket *const pws)
+{
+    this->pws = pws;
+};
+
 String MessageOutputClass::get_millis_as_String (const char *fmt)
 {
   char s_timestamp[32];
@@ -18,11 +23,19 @@ String MessageOutputClass::get_millis_as_String (const char *fmt)
 
 size_t MessageOutputClass::write(uint8_t c)
 {
+    if (pws != NULL) {
+        pws->textAll(&c, 1);
+    }
+
     return Serial.write(c);
 }
 
 size_t MessageOutputClass::write(const uint8_t* buffer, size_t size)
 {
+    if (pws != NULL) {
+        pws->textAll(buffer, size);
+    }
+
     return Serial.write(buffer, size);
 }
 
@@ -37,8 +50,15 @@ void MessageOutputClass::logf(const char *fmt...)
     Serial.write((uint8_t *)s_timestamp, strlen(s_timestamp));
 
     static char bf [256];
-    vsnprintf(bf, sizeof(bf), fmt, args);
-    Serial.write((uint8_t *)bf, strlen(bf));
+    int len = vsnprintf(bf, sizeof(bf), fmt, args);
+    if ((len <= 0) || (len >= 256)) {
+        return; // conversion error in vsnprintf
+    }
+    Serial.write((uint8_t *)bf, len);
+
+    if (pws != NULL) {
+        pws->textAll(bf, len);
+    }
 
     Serial.write('\r');
     Serial.write('\n');

@@ -104,7 +104,7 @@ void MqttS0CounterClass::loop()
         break;
 
         case 1:
-        if (t_current - t_state0_left > 10)
+        if (t_current - t_state0_left > 2)
         {
             state = 2;
             countEvent();

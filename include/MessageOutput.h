@@ -3,7 +3,8 @@
 #include <HardwareSerial.h>
 #include <Stream.h>
 #include <mutex>
-//#include <AsyncWebSocket.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncWebSocket.h>
 
 #define BUFFER_SIZE 500
 
@@ -14,6 +15,7 @@ public:
     size_t write(const uint8_t *buffer, size_t size) override;
     String get_millis_as_String (const char *fmt = NULL);
     void logf(const char *fmt...);
+    void setWebsocket(AsyncWebSocket *const pws);
 
 private:
     char* _ws = NULL;
@@ -21,6 +23,7 @@ private:
     uint16_t _buff_pos = 0;
     uint32_t _lastSend = 0;
     bool _forceSend = false;
+    AsyncWebSocket *pws = NULL;
 
     std::mutex _msgLock;
 };
