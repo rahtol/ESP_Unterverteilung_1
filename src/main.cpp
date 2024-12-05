@@ -155,6 +155,8 @@ void setup()
     ws.onEvent(std::bind(&onWebsocketEvent, _1, _2, _3, _4, _5, _6));
     MessageOutput.setWebsocket(&ws);
 
+    // Start server
+    server.begin();
 
     // Initialize NTP
     MessageOutput.logf("Initialize NTP... ");
