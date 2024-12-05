@@ -25,7 +25,7 @@ void MqttSettingsClass::onMqttConnect(bool sessionPresent)
     _mqttState = mqtt_ready;
     String t0 = NtpSettings.getLocalTimeAndDate();
     MessageOutput.logf("Connected to MQTT at %s. _mqttState = mqtt_ready", t0.c_str());
-    publish(willTopic, MessageOutput.get_millis_as_String("miilis=%d: ") + "mqtt connect at " + t0);
+    publish(willTopic, MessageOutput.get_millis_as_String("millis=%d: ") + "mqtt connect at " + t0);
     publish("version", ESP_Unterverteilung::version);
 }
 
