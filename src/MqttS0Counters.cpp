@@ -221,7 +221,7 @@ void MqttS0CounterClass::onMqttMessage(String subtopic, String payload)
 
     initial_count_subscription_callback_has_occured = true;
     count_initial = payload.toDouble();
-    if (count_initial > count_total)
+    if (count_initial > 0 /* count_total */)
     {
         count_total = count_initial;
         MessageOutput.logf("Subscription callback for S0-instance==%s, inital_counter=%.4f", _name.c_str(), count_initial);
