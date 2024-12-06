@@ -23,7 +23,8 @@ namespace ESP_Unterverteilung {
 //const char* version = "Project ESP_Unterverteilung, Version 1.13, 20.02.2024 16:47:00";
 //const char* version = "Project ESP_Unterverteilung, Version 1.14, 22.02.2024 11:12:00";
 //const char* version = "Project ESP_Unterverteilung, Version 1.16, 05.12.2024 19:02:00";
-const char* version = "Project ESP_Unterverteilung, Version 1.17, 05.12.2024 20:52:00";
+//const char* version = "Project ESP_Unterverteilung, Version 1.17, 05.12.2024 20:52:00";
+const char* version = "Project ESP_Unterverteilung, Version 1.18, 06.12.2024 13:42:00";
 
 }
 
@@ -180,6 +181,7 @@ void setup()
 void loop()
 {
   ArduinoOTA.handle();
+  ws.cleanupClients();
   
   MessageOutput.loop();
   yield();
