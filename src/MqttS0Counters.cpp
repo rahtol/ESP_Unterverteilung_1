@@ -234,4 +234,27 @@ void MqttS0CounterClass::onMqttMessage(String subtopic, String payload)
 }
 
 
+double MqttS0CountersClass::get_count(String name)
+{
+    double ret = NAN;
+
+    for (auto &s0 : _cbS0List)
+    {
+        if (s0.getName() == name)
+        {
+            ret = s0.get_count();
+            break;
+        }
+    }
+
+    return ret;
+};
+
+
+double MqttS0CounterClass::get_count()
+{
+    return this->count_total;
+};
+
+
 MqttS0CountersClass MqttS0Counters;

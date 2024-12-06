@@ -9,6 +9,7 @@ public:
     void init_subscriptions();
     void onMqttMessage(String subtopic, String payload);
     const String &getName();
+    double get_count();
 
 private:
     const String _name;
@@ -36,6 +37,7 @@ public:
     void loop();
     void addS0Counter(String name, int pin, int pulsesPerKwh);
     void onMqttMessage(String subtopic, String payload);
+    double get_count(String name);
 
 private:
     typedef enum S0CounterState_t {

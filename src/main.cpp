@@ -24,43 +24,43 @@ namespace ESP_Unterverteilung {
 //const char* version = "Project ESP_Unterverteilung, Version 1.14, 22.02.2024 11:12:00";
 //const char* version = "Project ESP_Unterverteilung, Version 1.16, 05.12.2024 19:02:00";
 //const char* version = "Project ESP_Unterverteilung, Version 1.17, 05.12.2024 20:52:00";
-const char* version = "Project ESP_Unterverteilung, Version 1.18, 06.12.2024 13:42:00";
+//const char* version = "Project ESP_Unterverteilung, Version 1.18, 06.12.2024 13:42:00";
+const char* version = "Project ESP_Unterverteilung, Version 1.19, 06.12.2024 17:04";
 
 }
 
 // Create an AsyncWebServer object on port 80
 AsyncWebServer server(80);
 AsyncWebSocket ws("/console");
+String boot_time_amd_date = "??";
 
+extern const char index_html[] asm("_binary_src_index_html_start");
+extern const uint8_t index_html_end[] asm("_binary_src_index_html_end");
 
-const char index_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html>
-<head>
-  <title>ESP Unterverteilung</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    html {font-family: Arial; display: inline-block; text-align: center;}
-    h2 {font-size: 2.0rem;}
-    p {font-size: 3.0rem;}
-    body {max-width: 600px; margin:0px auto; padding-bottom: 25px;}
-  </style>
-</head>
-<body>
-  <h2>ESP Unterverteilung</h2>
-  %COUNTERPLACEHOLDER%
-</body>
-</html>
-)rawliteral";
-
+String to_String(double f)
+{
+  char bf [32];
+  sprintf(bf, "%3.2f", f);
+  return String(bf);
+}
 
 // Replaces placeholder with button section in your web page
 String processor(const String& var){
   //Serial.println(var);
   if(var == "COUNTERPLACEHOLDER"){
     String countervalues = "";
-    countervalues += "<h4>Kueche:</h4>";
-    countervalues += "<h4>Herd:</h4>";
+    countervalues +=  "<h4>Kueche: " + to_String(MqttS0Counters.get_count("küche")) + "</h4>";
+    countervalues += "<h4>Herd: " + to_String(MqttS0Counters.get_count("herd")) + "</h4>";
     return countervalues;
+  }
+  else if (var == "BOOTTIMEANDDATE") {
+    return "<h4>Up since: " + boot_time_amd_date + "</h4>";
+  }
+  else if (var == "VERSION") {
+    return "<h4>" + String(ESP_Unterverteilung::version) + "</h4>";
+  }
+  else if (var == "NOW") {
+    return "<h4> counter values at " + NtpSettings.getLocalTimeAndDate() + "</h4>";
   }
   return String();
 }
@@ -164,6 +164,8 @@ void setup()
     MessageOutput.logf("Initialize NTP... ");
     NtpSettings.init();
     MessageOutput.logf("done");
+
+    boot_time_amd_date = NtpSettings.getLocalTimeAndDate();
 
     // Initialize MqTT
     MessageOutput.logf("Initialize MqTT... ");
