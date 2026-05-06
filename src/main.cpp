@@ -25,7 +25,8 @@ namespace ESP_Unterverteilung {
 //const char* version = "Project ESP_Unterverteilung, Version 1.16, 05.12.2024 19:02:00";
 //const char* version = "Project ESP_Unterverteilung, Version 1.17, 05.12.2024 20:52:00";
 //const char* version = "Project ESP_Unterverteilung, Version 1.18, 06.12.2024 13:42:00";
-const char* version = "Project ESP_Unterverteilung, Version 1.19, 06.12.2024 17:04";
+// const char* version = "Project ESP_Unterverteilung, Version 1.19, 06.12.2024 17:04";
+const char* version = "Project ESP_Unterverteilung, Version 1.20, 02.02.2025 16:29";
 
 }
 

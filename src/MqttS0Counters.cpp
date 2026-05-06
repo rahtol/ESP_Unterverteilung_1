@@ -190,9 +190,15 @@ void MqttS0CountersClass::loop()
 
     if (s0CounterState == s0_ready)
     {
-        for (auto &s0 : _cbS0List)
+        if (MqttSettings.isConnected())
         {
-            s0.loop();
+            for (auto &s0 : _cbS0List)
+            {
+                s0.loop();
+            }
+        }
+        else {
+            s0CounterState = s0_idle;
         }
     }
 };
