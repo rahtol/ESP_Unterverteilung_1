@@ -12,6 +12,9 @@ public:
     bool is_ready();
     String getLocalTimeAndDate();
     unsigned long get_boottime_millis();
+    String get_boottime_and_date() {
+        return boot_time_and_date;
+    };
 
 private:
     typedef enum NtpState_t {
@@ -22,6 +25,7 @@ private:
     NtpState _ntpState;
     unsigned long t_last_call_to_getlocaltime;
     unsigned long t_boot;
+    String boot_time_and_date;
 
     void setServer();
     void setTimezone();

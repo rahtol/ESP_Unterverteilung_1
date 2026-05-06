@@ -3,7 +3,7 @@
 #include <time.h>
 #include "MessageOutput.h"
 
-NtpSettingsClass::NtpSettingsClass()
+NtpSettingsClass::NtpSettingsClass() : _ntpState(ntp_idle), t_last_call_to_getlocaltime(0), t_boot(0), boot_time_and_date("??")
 {
 }
 
@@ -30,6 +30,7 @@ void NtpSettingsClass::loop ()
         if(::getLocalTime(&timeinfo))
         {
             _ntpState = ntp_ready;
+            this->boot_time_and_date = getLocalTimeAndDate();
         }
     }
 };
@@ -54,7 +55,7 @@ bool NtpSettingsClass::is_ready()
 String NtpSettingsClass::getLocalTimeAndDate()
 {
   struct tm timeinfo;
-  if(!::getLocalTime(&timeinfo)){
+  if(!::getLocalTime(&timeinfo, 10000U)){
     MessageOutput.logf("Failed to obtain time");
     return String("???");
   }

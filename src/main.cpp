@@ -26,14 +26,14 @@ namespace ESP_Unterverteilung {
 //const char* version = "Project ESP_Unterverteilung, Version 1.17, 05.12.2024 20:52:00";
 //const char* version = "Project ESP_Unterverteilung, Version 1.18, 06.12.2024 13:42:00";
 // const char* version = "Project ESP_Unterverteilung, Version 1.19, 06.12.2024 17:04";
-const char* version = "Project ESP_Unterverteilung, Version 1.20, 02.02.2025 16:29";
+//const char* version = "Project ESP_Unterverteilung, Version 1.20, 02.02.2025 16:29";
+const char* version = "Project ESP_Unterverteilung, Version 1.21, 06.05.2026 14:26";
 
 }
 
 // Create an AsyncWebServer object on port 80
 AsyncWebServer server(80);
 AsyncWebSocket ws("/console");
-String boot_time_amd_date = "??";
 
 extern const char index_html[] asm("_binary_src_index_html_start");
 extern const uint8_t index_html_end[] asm("_binary_src_index_html_end");
@@ -55,7 +55,7 @@ String processor(const String& var){
     return countervalues;
   }
   else if (var == "BOOTTIMEANDDATE") {
-    return "<h4>Up since: " + boot_time_amd_date + "</h4>";
+    return "<h4>Up since: " + NtpSettings.get_boottime_and_date() + "</h4>";
   }
   else if (var == "VERSION") {
     return "<h4>" + String(ESP_Unterverteilung::version) + "</h4>";
@@ -165,8 +165,6 @@ void setup()
     MessageOutput.logf("Initialize NTP... ");
     NtpSettings.init();
     MessageOutput.logf("done");
-
-    boot_time_amd_date = NtpSettings.getLocalTimeAndDate();
 
     // Initialize MqTT
     MessageOutput.logf("Initialize MqTT... ");
